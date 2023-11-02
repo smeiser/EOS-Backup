@@ -47,7 +47,9 @@ libeosformfactors_la_SOURCES = \
 	parametric-kmpw2010.hh parametric-kmpw2010-impl.hh parametric-kmpw2010.cc \
 	pi-lcdas.cc pi-lcdas.hh \
 	psd-lcdas.cc psd-lcdas.hh \
+	rho-lcdas.cc rho-lcdas.hh \
 	unitarity-bounds.cc unitarity-bounds.hh \
+	vec-lcdas.cc vec-lcdas.hh \
 	zero-recoil-sum-rule.cc zero-recoil-sum-rule.hh
 libeosformfactors_la_CXXFLAGS = $(AM_CXXFLAGS) $(GSL_CXXFLAGS)
 libeosformfactors_la_LDFLAGS = $(AM_LDFLAGS) $(GSL_LDFLAGS)
@@ -117,7 +119,9 @@ TESTS = \
 	parametric-kmpw2010_TEST \
 	pi-lcdas_TEST \
 	psd-lcdas_TEST \
-	unitarity-bounds_TEST
+	rho-lcdas_TEST \
+	unitarity-bounds_TEST \
+	vec-lcdas_TEST
 LDADD = \
 	$(top_builddir)/test/libeostest.la \
 	libeosformfactors.la \
@@ -191,4 +195,8 @@ pi_lcdas_TEST_SOURCES = pi-lcdas_TEST.cc
 
 psd_lcdas_TEST_SOURCES = psd-lcdas_TEST.cc
 
+rho_lcdas_TEST_SOURCES = rho-lcdas_TEST.cc
+
 unitarity_bounds_TEST_SOURCES = unitarity-bounds_TEST.cc
+
+vec_lcdas_TEST_SOURCES = vec-lcdas_TEST.cc
