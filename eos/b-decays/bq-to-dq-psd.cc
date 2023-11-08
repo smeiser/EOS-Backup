@@ -172,7 +172,7 @@ namespace eos
             if ((0.0 < z) && (z < 1.0))
             {
                 return
-                    log(u * (1.0 - z * z)) / (1.0 - u * (1.0 - z * z)) - pow(log(u * (1.0 - z * z)), 2) - dilog(1.0 - u * (1 - z * z));
+                    log(u * (1.0 - z * z)) / (1.0 - u * (1.0 - z * z)) - pow(log(u * (1.0 - z * z)), 2) - dilog(1.0 - u * (1.0 - z * z));
             }
             // evaluate AVLL chosing the correct branch for the unphysical case z = m_b / m_c > 1,
             else if (z > 1.0)
@@ -209,41 +209,16 @@ namespace eos
             return 0.0;
         };
 
-        complex<double> ASLR(const double & u, const double & z) const
-        {
-             // evaluate ASLR chosing the correct branch
-            if (0.0 < z && z < 1.0)
-            {
-                return
-                    z * z / (pow(1.0 + z, 2) * (1.0 - u * (1.0 - z * z))) +
-                    ((-2.0 + u * u * pow(-1.0 + z, 2) * (2.0 + 4.0 * z + 3.0 * z * z)) * log(u * (1.0 - z * z))) / pow(1.0 - u * (1 - z * z), 2) +
-                    2.0 * ((2.0 * log(u * (1.0 - z * z))) / (1.0 - u * (1 - z * z)) - pow(log(u * (1.0 - z * z)), 2) - dilog(1.0 - u * (1.0 - z * z)));
-            }
-            if (z > 1.0)
-            {
-                return
-                    z * z / (pow(1 + z, 2) * (1.0 - u * (1.0 -z * z))) +
-                    ((-2.0 + u * u * pow(-1.0 + z, 2) * (2.0 + 4.0 * z + 3.0 * z * z))* (-1i * M_PI + log(-(u * (1 - z * z))))) / pow(1.0 - u * (1 - z * z), 2) +
-                    2.0 * (-1.0 / 3.0 * M_PI * M_PI + (2.0 * (-1i * M_PI + log(-(u * (1.0 - z * z))))) / (1.0 - u * (1 - z * z)) -
-                    pow(-1i * M_PI + log(-(u * (1 -z * z))), 2) - 1i * M_PI * log(1.0 - u * (1.0 -z * z)) + pow(log(1.0 - u * (1.0 - z * z)), 2) / 2.0 +
-                    dilog(1.0 / (1.0 - u * (1.0 - z * z))));
-            }
-        };
-
-        complex<double> fSLR(const double & u, const double & z) const
-        {
-            return
-                ASLR(u, z) - ASLR(1.0 - u, z);
-        };
-
         complex<double> ATLL(const double & u, const double & z) const
         {
-            if (0.0 < z && z < 1.0)
+            // evaluate ATLL chosing the correct branch for physical z = m_c / m_b < 1
+            if ((0.0 < z) && (z < 1.0))
             {
                 return
                     ((-1.0 + u * (2.0 - u - 2.0 * z  + (-2.0 + u) * z * z)) * log(u * (1.0 - z * z))) / (1.0 - u * (1.0 - z * z)) +
                     (1.0 - 2.0 * u) * (pow(log(u * (1.0 - z * z)), 2) + dilog(1.0 - u * (1.0 - z * z)));
             }
+            // evaluate ATLL chosing the correct branch for the unphysical case z = m_b / m_c > 1
             if (z > 1.0)
             {
                 return
@@ -251,6 +226,10 @@ namespace eos
                     (1.0 - 2.0 * u) * (M_PI * M_PI / 3.0 + pow(-1i * M_PI + log(-(u * (1.0 - z * z))), 2) + 1i * M_PI * log(1.0 - u * (1.0 - z * z)) -
                     pow(log(1.0 - u * (1.0 - z * z)), 2) / 2.0 - dilog(1.0 / (1.0 - u * (1.0 - z * z))));
             }
+
+
+            throw InternalError("Invalid value for z: " + stringify(z) + " in ATLL.");
+            return 0.0;
         };
 
         complex<double> fTLL(const double & u, const double & z) const
@@ -288,7 +267,7 @@ namespace eos
             auto a_1_nlo_integrand = [&](const double & u) -> complex<double>
             {
                 static const double eps = 1.0e-10;
-                complex<double> TVLL ;
+                complex<double> TVLL;
                 if ((u < eps) || (u > 1.0 - eps))
                 {
                     TVLL = 0.0;
@@ -298,7 +277,7 @@ namespace eos
                     TVLL = (-18.0 - 6.0 * 2.0 * log(mu() / mb) + fVLL(1.0 - u, 1.0 / z) + fVLL(u, z) + (3.0 + 2.0 * log(u / (1.0 - u))) * log(z * z)) * this->lcdas->phi(u, mu());
                 };
 
-                complex<double> TVLR ;
+                complex<double> TVLR;
                 if ((u < eps) || (u > 1.0 - eps))
                 {
                     TVLR = 0.0;
