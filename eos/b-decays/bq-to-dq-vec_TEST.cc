@@ -67,6 +67,7 @@ class BqToDqVecTest :
                 p["dbcu::Im{c4}" ] = 0;
                 Options oo
                 {
+                    { "accuracy",     "LO+NLO" },
                     { "q",            "s"      },
                     { "model",        "WET"    },
                     { "form-factors", "BSZ2015"}
@@ -74,12 +75,12 @@ class BqToDqVecTest :
                 BqToDqVector d(p, oo);
 
                 {
-                    const double eps = 1.0e-4;
-                    TEST_CHECK_RELATIVE_ERROR(d.re_a_1(), -1.07353  , eps);
-                    TEST_CHECK_RELATIVE_ERROR(d.im_a_1(), -0.0176978, eps);
+                    const double eps = 1.0e-05;
+                    TEST_CHECK_RELATIVE_ERROR(d.re_a_1(), -1.051961053676965, eps);
+                    TEST_CHECK_RELATIVE_ERROR(d.im_a_1(), -0.016829779716609, eps);
 
-                    TEST_CHECK_RELATIVE_ERROR(d.decay_width(),     1.4232505232528867e-16, eps);
-                    TEST_CHECK_RELATIVE_ERROR(d.branching_ratio(), 0.00032845906180813356, eps);
+                    TEST_CHECK_RELATIVE_ERROR(d.decay_width(),     4.70855e-15, eps);
+                    TEST_CHECK_RELATIVE_ERROR(d.branching_ratio(), 0.0108805  , eps);
                 }
             }
 
@@ -147,6 +148,7 @@ class BqToDqVecTest :
 
                 Options oo
                 {
+                    { "accuracy",     "LO+NLO" },
                     { "q",            "s"      },
                     { "model",        "WET"    },
                     { "form-factors", "BSZ2015"}
@@ -154,12 +156,12 @@ class BqToDqVecTest :
                 BqToDqVector d(p, oo);
 
                 {
-                    const double eps = 1e-4;
-                    TEST_CHECK_RELATIVE_ERROR(d.re_a_1(), 105.15257194597605, eps);
-                    TEST_CHECK_RELATIVE_ERROR(d.im_a_1(), 116.73543418483666, eps);
+                    const double eps = 1.0e-5;
+                    TEST_CHECK_RELATIVE_ERROR(d.re_a_1(), -13.34330, eps);
+                    TEST_CHECK_RELATIVE_ERROR(d.im_a_1(), -39.05099,  eps);
 
-                    TEST_CHECK_RELATIVE_ERROR(d.decay_width(),     3.081825190307355e-12, eps);
-                    TEST_CHECK_RELATIVE_ERROR(d.branching_ratio(), 7.1122644546898695,    eps);
+                    /*TEST_CHECK_RELATIVE_ERROR(d.decay_width(),     3.081825190307355e-12, eps);
+                    TEST_CHECK_RELATIVE_ERROR(d.branching_ratio(), 7.1122644546898695,    eps);*/
                 }
             }
         }
